@@ -21,6 +21,6 @@ export class PostService {
 
   async createPost(author: string, text: string): Promise<Post> {
     const newPost = await this.postModel.create({ author, text });
-    return newPost.save();
+    return newPost;
   }
 }
