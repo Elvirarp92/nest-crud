@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './interfaces/user.interface';
-import { CreateUserDTO } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -18,16 +17,11 @@ export class UserService {
     return user;
   }
 
-  //edit an specific user
-  async updateUser(
-    userID: string,
-    createUserDTO: CreateUserDTO,
-  ): Promise<User> {
-    const updatedUser = await this.userModel.findByIdAndUpdate(
-      userID,
-      createUserDTO,
-      { new: true },
-    );
-    return updatedUser;
+  //Adding favs
+  async updateUser(userID: string, favID: string): Promise<User> {
+    const user = await this.userModel.findById(userID);
+    const userData = user.toJSON();
+    userData.favs.push(favID);
+    this.userModel.findByIdAndUpdate(userID, { $set: userData });
   }
 }
