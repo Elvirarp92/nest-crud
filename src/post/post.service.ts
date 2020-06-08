@@ -6,7 +6,11 @@ import { CreatePostDTO } from './dto/create-post.dto';
 
 @Injectable()
 export class PostService {
-
   constructor(@InjectModel('Post') private readonly postModel: Model<Post>) {}
-  
+
+  //fetch all posts
+  async getAllPosts(): Promise<Post[]> {
+    const posts = await this.postModel.find().exec();
+    return posts;
+  }
 }
