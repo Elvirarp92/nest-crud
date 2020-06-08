@@ -1,18 +1,16 @@
 import {
   Controller,
   Get,
-  Req,
   Res,
   HttpStatus,
   Body,
   Post,
-  Query,
   NotFoundException,
-  Delete,
   Param,
 } from '@nestjs/common';
+import { User } from './../decorators/user.decorator';
 import { PostService } from './post.service';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 @Controller('post')
 export class PostController {
@@ -32,8 +30,12 @@ export class PostController {
   }
 
   @Post('newpost')
-  async createPost(@Req() req: Request, @Res() res: Response, @Body() body) {
-    const newPost = await this.postService.createPost(req.user, body.text);
+  async createPost(
+    @Res() res: Response,
+    @User() user,
+    @Body() body,
+  ) {
+    const newPost = await this.postService.createPost(user, body.text);
     return res.status(HttpStatus.OK).json({
       message: 'Post created successfully!',
     });
