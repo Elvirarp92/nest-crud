@@ -21,4 +21,11 @@ export class PostController {
     const allPosts = await this.postService.getAllPosts();
     return res.status(HttpStatus.OK).json(allPosts);
   }
+
+  @Get('post/:postID')
+  async getPost(@Res() res, @Param('postID') postID) {
+    const post = await this.postService.getPost(postID);
+    if (!post) throw new NotFoundException('Post does not exist!');
+    return res.status(HttpStatus.OK).json(post);
+  }
 }
