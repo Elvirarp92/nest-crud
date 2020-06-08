@@ -8,9 +8,9 @@ import {
   NotFoundException,
   Param,
 } from '@nestjs/common';
+import { User } from './../decorators/user.decorator';
 import { UserService } from './user.service';
 import { Request, Response } from 'express';
-import { CreateUserDTO } from './dto/create-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -34,10 +34,11 @@ export class UserController {
   async addFav(
     @Req() req: Request,
     @Res() res: Response,
+    @User() user,
     @Param('favID') favID: string,
   ) {
-    const user = await this.userService.addFav(req.user._id, req.params.favID);
-    if (!user) throw new NotFoundException('This user does not exist!');
+    const fetchedUser = await this.userService.addFav(user, req.params.favID);
+    if (!fetchedUser) throw new NotFoundException('This user does not exist!');
     return res.status(HttpStatus.OK).json({
       message: 'Fav added successfully!',
     });

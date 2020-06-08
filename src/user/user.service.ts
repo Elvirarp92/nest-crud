@@ -18,10 +18,14 @@ export class UserService {
   }
 
   //Adding favs
-  async updateUser(userID: string, favID: string): Promise<User> {
+  async addFav(userID: string, favID: string): Promise<User> {
     const user = await this.userModel.findById(userID);
     const userData = user.toJSON();
     userData.favs.push(favID);
-    this.userModel.findByIdAndUpdate(userID, { $set: userData });
+    const updatedUser = this.userModel
+      .findByIdAndUpdate(userID, { $set: userData }, { new: true })
+      .populate('favs')
+      .exec();
+    return updatedUser;
   }
 }
