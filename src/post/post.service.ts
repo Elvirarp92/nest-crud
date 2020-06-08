@@ -13,4 +13,10 @@ export class PostService {
     const posts = await this.postModel.find().exec();
     return posts;
   }
+
+  //fetch a specific post
+  async getPost(postID: string): Promise<Post> {
+    const post = await this.postModel.findById(postID).exec();
+    return post;
+  }
 }
