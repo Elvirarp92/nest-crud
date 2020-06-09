@@ -35,7 +35,7 @@ export class PostController {
     @User() user,
     @Body() body,
   ) {
-    const newPost = await this.postService.createPost(user, body.text);
+    const newPost = await this.postService.createPost(user.id, body.text);
     return res.status(HttpStatus.OK).json({
       message: 'Post created successfully!',
     });

@@ -37,7 +37,7 @@ export class UserController {
     @User() user,
     @Param('favID') favID: string,
   ) {
-    const fetchedUser = await this.userService.addFav(user, req.params.favID);
+    const fetchedUser = await this.userService.addFav(user.id, req.params.favID);
     if (!fetchedUser) throw new NotFoundException('This user does not exist!');
     return res.status(HttpStatus.OK).json({
       message: 'Fav added successfully!',
